@@ -106,11 +106,8 @@ public class CompanyInfoHttpClient {
         Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => END");
      }	
 	
-	
-	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 	}
-
 }
