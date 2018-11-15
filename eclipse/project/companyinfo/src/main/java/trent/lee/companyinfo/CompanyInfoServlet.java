@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletInputStream;
 
 /**
  * Servlet implementation class CompanyInfoServlet
@@ -43,6 +44,21 @@ public class CompanyInfoServlet extends HttpServlet {
 	
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet CompanyInfoServlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet CompanyInfoServlet at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
+    	
+    	ServletInputStream inStream = request.getInputStream();    	
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -53,9 +69,29 @@ public class CompanyInfoServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CompanyInfoServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h2>Company Info!</h2>");
+            
+            byte[] b = IOUtils.toByteArray(inStream);
+            String myString = new String(b);
+            out.println("<h3>myString:</h3>");
+            out.println("<p>");
+            out.println(myString);
+            out.println("</p>");
+            
+//            out.println("<ul>");
+//            for ( int ii = 0; ii < b.length; ii++ ) {
+//                out.println("<li>");
+//                out.println(b[ii]);
+//                out.println("</li>");
+//            }
+//            out.println("</ul>");
+
             out.println("</body>");
             out.println("</html>");
-        }
+        }    	
+    	
+    	
+    	
     }	
 	
 	
