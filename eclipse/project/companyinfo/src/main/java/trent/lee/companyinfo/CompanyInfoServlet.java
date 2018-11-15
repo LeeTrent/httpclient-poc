@@ -2,6 +2,8 @@ package trent.lee.companyinfo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,26 +60,41 @@ public class CompanyInfoServlet extends HttpServlet {
 //            out.println("</html>");
 //        }
     	
-    	ServletInputStream inStream = request.getInputStream();    	
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CompanyInfoServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CompanyInfoServlet at " + request.getContextPath() + "</h1>");
-            out.println("<h2>Company Info!</h2>");
-            
-            byte[] b = IOUtils.toByteArray(inStream);
-            String myString = new String(b);
-            out.println("<h3>myString:</h3>");
-            out.println("<p>");
-            out.println(myString);
-            out.println("</p>");
-            
+        Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => BEGIN");	
+               
+        ServletInputStream inStream = request.getInputStream();
+        byte[] requestPayload = IOUtils.toByteArray(inStream);
+        
+        CompanyInfoHttpClient client = new CompanyInfoHttpClient();
+        response.setContentType("text/xml;charset=UTF-8");
+        client.processRequest(requestPayload, response.getOutputStream());
+        
+       
+    	
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet CompanyInfoServlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet CompanyInfoServlet at " + request.getContextPath() + "</h1>");
+//            out.println("<h2>Company Info!</h2>");
+//            
+//            byte[] b = IOUtils.toByteArray(inStream);
+//            String myString = new String(b);
+//            
+//            Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => BEGIN myString:");
+//            Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, myString);
+//            Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => END myString: ");
+//            
+//            out.println("<h3>myString:</h3>");
+//            out.println("<p>");
+//            out.println(myString);
+//            out.println("</p>");
+//            
 //            out.println("<ul>");
 //            for ( int ii = 0; ii < b.length; ii++ ) {
 //                out.println("<li>");
@@ -85,16 +102,12 @@ public class CompanyInfoServlet extends HttpServlet {
 //                out.println("</li>");
 //            }
 //            out.println("</ul>");
-
-            out.println("</body>");
-            out.println("</html>");
-        }    	
+//
+//            out.println("</body>");
+//            out.println("</html>");
+//        }    	
     	
-    	
+        Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => END");
     	
     }	
-	
-	
-	
-
 }

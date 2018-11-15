@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -19,25 +20,34 @@ public class CompanyInfoHttpClient {
 
 	private static final String url = "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso";
 	
-    public void execute(byte[] input, OutputStream outStream){
+    public void processRequest(byte[] requestPayload, OutputStream outStream){
+    	
+    	Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => BEGIN");	
+    	
+        Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => BEGIN requestPayload:");
+        Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, new String(requestPayload));
+        Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => END requestPayload: ");
         
+        //Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Instantiating HttpClient ... ");
         ////////////////////////////////////////////////////////
         // Instantiate HttpClient
         ////////////////////////////////////////////////////////
         HttpClient client = HttpClientBuilder.create().build();
-            
+        
+        //Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Creating and Preparing HttpPost ... ");
         ////////////////////////////////////////////////////////
-        // Create Post Request
+        // Create and Prepare Post Request
         ////////////////////////////////////////////////////////
         HttpPost post = new HttpPost(CompanyInfoHttpClient.url);       
         post.setHeader("Content-type", "text/xml; charset=UTF-8");
         try {
-            post.setEntity(new StringEntity(new String(input)));
+            post.setEntity(new StringEntity(new String(requestPayload)));
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
       
+        //Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Executing Post Request ... ");
         ////////////////////////////////////////////////////////
         // Execute Post Request
         ////////////////////////////////////////////////////////			
@@ -49,12 +59,13 @@ public class CompanyInfoHttpClient {
             return;
         }
         
+        //Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Processing Response ... ");
         ////////////////////////////////////////////////////////
         // Process Response
         ////////////////////////////////////////////////////////	      
-        Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, 
-                            "Response Code : " + response.getStatusLine().getStatusCode());
+        Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Response Code: " + response.getStatusLine().getStatusCode());
         
+        //Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Instantiating BufferedReader ... ");
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -66,6 +77,7 @@ public class CompanyInfoHttpClient {
             return;
         }
         
+        //Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Instantiating BufferedWriter using OutputStream ... ");
         BufferedWriter writer = null;
         try {
             ////////////////////////////////////////////////////////
@@ -77,16 +89,21 @@ public class CompanyInfoHttpClient {
             return;
         }
         
+        //Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => Reading and writing each line of the response... ");
         String line = null;
         try {
             while ((line = reader.readLine()) != null) {
+            	//System.out.println(line);
                 writer.write(line);
                 writer.newLine();
             }
+            writer.flush();
         } catch (IOException ex) {
             Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.SEVERE, null, ex);
             return;
         }
+        
+        Logger.getLogger(CompanyInfoHttpClient.class.getName()).log(Level.INFO, "[CompanyInfoHttpClient][processRequest] => END");
      }	
 	
 	
