@@ -23,14 +23,12 @@ public class CompanyInfoServlet extends HttpServlet {
      */
     public CompanyInfoServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		this.processRequest(request, response);;
 	}
@@ -39,25 +37,11 @@ public class CompanyInfoServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 	
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet CompanyInfoServlet</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet CompanyInfoServlet at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
     	
         Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => BEGIN");	
                
@@ -74,50 +58,10 @@ public class CompanyInfoServlet extends HttpServlet {
         // REQUIRES AUTHENTICATION 
         ////////////////////////////////////////////////////////////        
         SecureCompanyInfoHttpClient client = new SecureCompanyInfoHttpClient("http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso");
-       
-        
+             
         response.setContentType("text/xml;charset=UTF-8");
         client.processRequest(requestPayload, response.getOutputStream());
         
-       
-    	
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet CompanyInfoServlet</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet CompanyInfoServlet at " + request.getContextPath() + "</h1>");
-//            out.println("<h2>Company Info!</h2>");
-//            
-//            byte[] b = IOUtils.toByteArray(inStream);
-//            String myString = new String(b);
-//            
-//            Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => BEGIN myString:");
-//            Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, myString);
-//            Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => END myString: ");
-//            
-//            out.println("<h3>myString:</h3>");
-//            out.println("<p>");
-//            out.println(myString);
-//            out.println("</p>");
-//            
-//            out.println("<ul>");
-//            for ( int ii = 0; ii < b.length; ii++ ) {
-//                out.println("<li>");
-//                out.println(b[ii]);
-//                out.println("</li>");
-//            }
-//            out.println("</ul>");
-//
-//            out.println("</body>");
-//            out.println("</html>");
-//        }    	
-    	
-        Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => END");
-    	
+        Logger.getLogger(CompanyInfoServlet.class.getName()).log(Level.INFO, "[CompanyInfoServlet][processRequest] => END");    	
     }	
 }
