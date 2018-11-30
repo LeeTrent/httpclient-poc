@@ -1,16 +1,15 @@
 package trent.lee.companyinfo;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletInputStream;
 
 /**
  * Servlet implementation class CompanyInfoServlet
@@ -65,7 +64,18 @@ public class CompanyInfoServlet extends HttpServlet {
         ServletInputStream inStream = request.getInputStream();
         byte[] requestPayload = IOUtils.toByteArray(inStream);
         
-        CompanyInfoHttpClient client = new CompanyInfoHttpClient();
+        
+        /////////////////////////////////////////////////////////////
+        // NO AUTHENTICATION REQUIRED
+        ////////////////////////////////////////////////////////////
+        //CompanyInfoHttpClient client = new CompanyInfoHttpClient();
+        
+        /////////////////////////////////////////////////////////////
+        // REQUIRES AUTHENTICATION 
+        ////////////////////////////////////////////////////////////        
+        SecureCompanyInfoHttpClient client = new SecureCompanyInfoHttpClient("http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso");
+       
+        
         response.setContentType("text/xml;charset=UTF-8");
         client.processRequest(requestPayload, response.getOutputStream());
         
